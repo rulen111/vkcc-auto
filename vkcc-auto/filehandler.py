@@ -1,6 +1,4 @@
-import os
 from io import BytesIO
-
 import requests
 from openpyxl import load_workbook
 
@@ -8,9 +6,6 @@ from flask import (
     Blueprint, flash, redirect, render_template, request, send_file
 )
 from werkzeug.utils import secure_filename
-
-# from vkclient import VKclient
-# from wbhandler import WBHandler
 
 ALLOWED_EXTENSIONS = {"xlsx"}
 
@@ -83,11 +78,6 @@ def payload(input_file, client_token, first_row=2, input_col=1, target_col=2):
         short_link = client.get_short_link(link)
         wb.write_new_link(row, target_col, short_link)
 
-    # virtual_workbook = BytesIO()
-    # wb.save(virtual_workbook)
-    # virtual_workbook.seek(0)
-    #
-    # return virtual_workbook
     return wb
 
 
@@ -107,9 +97,7 @@ def index():
 
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            # virtual_workbook = payload(file, TOKEN)
 
-            # wb = WBHandler(file)
             wb = payload(file, TOKEN)
             virtual_workbook = BytesIO()
             wb.save(virtual_workbook)
