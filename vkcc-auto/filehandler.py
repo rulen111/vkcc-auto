@@ -1,16 +1,12 @@
-import os
 from io import BytesIO
-
 import requests
 from openpyxl import load_workbook
+from openpyxl.styles import Font
 
 from flask import (
     Blueprint, flash, redirect, render_template, request, send_file
 )
 from werkzeug.utils import secure_filename
-
-# from vkclient import VKclient
-# from wbhandler import WBHandler
 
 ALLOWED_EXTENSIONS = {"xlsx"}
 
@@ -57,6 +53,11 @@ class WBHandler(object):
         value = self.active_ws.cell(row=row, column=col).value
         return value
 
+    def write_header(self, row, col, value):
+        cell = self.active_ws.cell(row=row, column=col)
+        cell.value = value
+        cell.font = Font(bold=True)
+
     def write_new_link(self, row, col, new_link):
         cell = self.active_ws.cell(row=row, column=col)
         cell.value = new_link
@@ -75,6 +76,8 @@ def allowed_file(filename):
 def payload(input_file, client_token, first_row=2, input_col=1, target_col=2):
     client = VKclient(client_token)
     wb = WBHandler(input_file)
+    if first_row > 1:
+        wb.write_header(first_row - 1, target_col, "Short link")
 
     for row in range(first_row, wb.max_row + 1):
         link = wb.get_link(row, input_col)
@@ -83,11 +86,6 @@ def payload(input_file, client_token, first_row=2, input_col=1, target_col=2):
         short_link = client.get_short_link(link)
         wb.write_new_link(row, target_col, short_link)
 
-    # virtual_workbook = BytesIO()
-    # wb.save(virtual_workbook)
-    # virtual_workbook.seek(0)
-    #
-    # return virtual_workbook
     return wb
 
 
@@ -107,15 +105,13 @@ def index():
 
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            # virtual_workbook = payload(file, TOKEN)
 
-            # wb = WBHandler(file)
             wb = payload(file, TOKEN)
             virtual_workbook = BytesIO()
             wb.save(virtual_workbook)
             virtual_workbook.seek(0)
 
-            return send_file(virtual_workbook, as_attachment=True, download_name=f"{filename}_output.xlsx",
+            return send_file(virtual_workbook, as_attachment=True, download_name=f"short_{filename}",
                              mimetype="application/vnd.ms-excel")
 
     return render_template("index.html")
