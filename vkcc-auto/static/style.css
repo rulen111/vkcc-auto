@@ -1,31 +1,33 @@
 @import "normalize.css";
 
 body {
-    font-family: arial, sans-serif;
-    background-color: rgba(0, 0, 0, 0.6);
+    font-family: MS Sans Serif, Geneva, sans-serif;
+    background-color: rgb(105, 105, 105);
 
     display: flex;
     justify-content: center;
-    align-items: center;
 
-    padding-top: 60px;
+    padding-top: 6vh;
 }
 
 .page {
     width: 390px;
-    height: 590px;
+    height: 320px;
 
     background: #ffffff;
 
     display: flex;
     flex-direction: column;
+    justify-content: center;
 
     box-sizing: border-box;
-    padding: 54px 30px 0px;
+    padding: 0px 30px;
+    border-radius: 15px;
 }
 
 .title {
-    margin-bottom: 33px;
+    margin: 0;
+    margin-bottom: 50px;
 }
 
 .upload__form {
@@ -34,23 +36,26 @@ body {
 }
 
 .file__input {
-    margin-bottom: 33px;
+    font-size: 18px;
+    margin-bottom: 25px;
 }
 
 .submit {
     width: 100%;
-    height: 48px;
+    height: 55px;
 
-    font-size: 14px;
+    font-size: 18px;
     text-transform: uppercase;
     color: #ffffff;
     font-weight: 700;
 
-    background-color: #b59f5b;
+    background-color: #000000;
     border: none;
 }
 
 .submit:hover {
-    background-color: #323232;
+    color: #000000;
+    background-color: #ffffff;
+    border: 3px solid #000000;
     cursor: pointer;
 }
