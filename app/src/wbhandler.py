@@ -19,7 +19,6 @@ class WBHandler(object):
         self.wb = load_workbook(filename=self.wb_file)
         self.active_ws = self.wb.active
         self.max_row = self.active_ws.max_row
-        self.max_col = self.active_ws.max_col
 
     def get_value(self, row: int, col: int) -> str:
         """
