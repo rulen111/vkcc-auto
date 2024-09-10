@@ -43,6 +43,11 @@ def index():
 
             try:
                 wb = payload(file, current_app.config["TOKEN"])
+            except ValueError as e:
+                current_app.logger.error(f"Value error on workbook indexing\n{e}")
+                flash("Недопустимый индекс ячейки", "Ошибка сервера")
+                return redirect(request.url)
+
             except InvalidTokenError as e:
                 current_app.logger.error(f"API Authentification error\n{e}")
                 flash("Неверный токен", "Ошибка сервера")

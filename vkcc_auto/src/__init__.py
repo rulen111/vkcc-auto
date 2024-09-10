@@ -21,6 +21,9 @@ def payload(
     :param target_col: index of a column to write new links to (starts from 1)
     :return: WBHandler object
     """
+    if first_row < 1 or input_col < 1 or target_col < 1:
+        raise ValueError("Workbook index must be equal or greater than 1")
+
     client = VKclient(client_token)
     client.test_request()
 

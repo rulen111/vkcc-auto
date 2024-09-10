@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import pytest
 from openpyxl import Workbook
 
@@ -25,6 +27,11 @@ def client(app):
 @pytest.fixture()
 def runner(app):
     return app.test_cli_runner()
+
+
+@pytest.fixture()
+def resources():
+    return Path(__file__).parent / "resources"
 
 
 # WBHANDLER
@@ -69,6 +76,7 @@ def invalid_wb_file(tmp_path_factory):
 def vkclientobj(app):
     return VKclient(app.config["TOKEN"])
 
+
 @pytest.fixture()
 def valid_link():
     link = {
@@ -76,3 +84,13 @@ def valid_link():
         "short": "https://vk.cc/ciLWS6",
     }
     return link
+
+
+# PAYLOAD
+# ---------------------------------------------------------------------
+@pytest.fixture()
+def valid_params(valid_wb, tmp_path_factory):
+    wb, data = valid_wb
+    fn = tmp_path_factory.mktemp("data") / "valid_params.xlsx"
+    wb.save(fn)
+    return fn

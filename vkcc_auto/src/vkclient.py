@@ -25,7 +25,8 @@ class VKclient(object):
             "url": "https://dzen.ru/",
             "private": 0,
         }
-        response = requests.get(self.baseurl, params={**self.auth_params, **params}, timeout=0.1)
+        # response = requests.get(self.baseurl, params={**self.auth_params, **params}, timeout=0.1)
+        response = requests.get(self.baseurl, params={**self.auth_params, **params})
         response.raise_for_status()
 
         error = response.json().get("error", None)
@@ -46,9 +47,11 @@ class VKclient(object):
         }
 
         if session:
-            response = session.get(self.baseurl, params={**self.auth_params, **params}, timeout=0.1)
+            # response = session.get(self.baseurl, params={**self.auth_params, **params}, timeout=0.1)
+            response = session.get(self.baseurl, params={**self.auth_params, **params})
         else:
-            response = requests.get(self.baseurl, params={**self.auth_params, **params}, timeout=0.1)
+            # response = requests.get(self.baseurl, params={**self.auth_params, **params}, timeout=0.1)
+            response = requests.get(self.baseurl, params={**self.auth_params, **params})
         response.raise_for_status()
 
         error = response.json().get("error", None)
