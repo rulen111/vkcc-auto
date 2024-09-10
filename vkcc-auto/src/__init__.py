@@ -2,7 +2,6 @@ import os
 from typing import IO
 
 import requests
-from requests import RequestException
 from werkzeug.datastructures import FileStorage
 
 from .wbhandler import WBHandler
@@ -23,11 +22,9 @@ def payload(
     :return: WBHandler object
     """
     client = VKclient(client_token)
+    client.test_request()
 
-    try:
-        wb = WBHandler(input_file)
-    except Exception as e:
-        raise OSError(f"Error while trying to read file\n{e}")
+    wb = WBHandler(input_file)
 
     if first_row > 1:
         wb.write_header(first_row - 1, target_col)
@@ -38,12 +35,7 @@ def payload(
             if not link:
                 break
 
-            try:
-                short_link = client.get_short_link(link, session=session)
-            except RequestException as e:
-                short_link = "error"
-                print(e)
-
+            short_link = client.get_short_link(link, session=session)
             wb.write_value(row, target_col, short_link)
 
     return wb

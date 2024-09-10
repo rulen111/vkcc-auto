@@ -15,6 +15,17 @@
             <input type="file" class="file__input" name="file">
             <button class="submit">Отправить</button>
         </form>
+        <div class="flashing">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                <ul class=message__list>
+                {% for category, message in messages %}
+                  <li class="message"><span class="message__category">{{ category }}</span> > {{ message }}</li>
+                {% endfor %}
+                </ul>
+              {% endif %}
+            {% endwith %}
+        </div>
     </main>
 </body>
 </html>

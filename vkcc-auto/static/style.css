@@ -12,7 +12,7 @@ body {
 
 .page {
     width: 390px;
-    height: 320px;
+    min-height: 320px;
 
     background: #ffffff;
 
@@ -58,4 +58,28 @@ body {
     background-color: #ffffff;
     border: 3px solid #000000;
     cursor: pointer;
+}
+
+.flashing {
+    display: flex;
+    margin-top: 30px;
+}
+
+.message__list {
+    padding: 0;
+    margin: 0;
+
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+}
+
+.message {
+    font-size: 14px;
+    font-weight: 400;
+    color: #000000;
+}
+
+.message__category {
+    font-weight: 700;
 }

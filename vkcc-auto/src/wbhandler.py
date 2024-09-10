@@ -5,6 +5,8 @@ from openpyxl import load_workbook
 from openpyxl.styles import Font
 from werkzeug.datastructures import FileStorage
 
+from .utils import WBReaderError, WBWriterError
+
 
 class WBHandler(object):
     """
@@ -16,9 +18,12 @@ class WBHandler(object):
         :param file: excel workbook file or path
         """
         self.wb_file = file
-        self.wb = load_workbook(filename=self.wb_file)
-        self.active_ws = self.wb.active
-        self.max_row = self.active_ws.max_row
+        try:
+            self.wb = load_workbook(filename=self.wb_file)
+            self.active_ws = self.wb.active
+            self.max_row = self.active_ws.max_row
+        except Exception:
+            raise WBReaderError()
 
     def get_value(self, row: int, col: int) -> str:
         """
@@ -57,4 +62,7 @@ class WBHandler(object):
         Save workbook to file or stream
         :param file: excel workbook file or path
         """
-        self.wb.save(file)
+        try:
+            self.wb.save(file)
+        except Exception:
+            raise WBWriterError()
