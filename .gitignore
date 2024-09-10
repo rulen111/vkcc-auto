@@ -1,2 +1,5 @@
 instance
 .idea
+tests
+.coverage
+.coveragerc
