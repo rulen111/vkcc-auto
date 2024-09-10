@@ -1,7 +1,7 @@
 import os
 from flask import Flask
 
-from . import filehandler
+from . import filehandler, config
 
 
 def create_app(test_config=None):
@@ -12,8 +12,15 @@ def create_app(test_config=None):
     )
 
     if test_config is None:
-        # load the instance config, if it exists, when not testing
-        app.config.from_envvar("YOURAPPLICATION_SETTINGS")
+        # load default config
+        app.config.from_object(config.DefaultConfig)
+        # try to load config with sensitive data using path from envvar
+        try:
+            app.config.from_envvar("VKCCAUTO_SETTINGS")
+        except Exception:
+            app.logger.warning("Path to secret config file not found in env. "
+                               "Make sure you pass VK API access token to this app config dict")
+            pass
     else:
         # load the test config if passed in
         app.config.from_mapping(test_config)

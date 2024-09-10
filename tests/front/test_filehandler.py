@@ -26,9 +26,19 @@ def test_index_post(client, resources, invalid_wb_file):
     assert response.status_code == 302
 
 
-def test_index_config(app, client, resources):
+def test_index_token(app, client, resources):
     app.config.update({
         "TOKEN": "1234"
+    })
+    response = client.post("/", data={
+        "file": ((resources / "input_example.xlsx").open("rb"), "input_example.xlsx"),
+    }, content_type='multipart/form-data')
+    assert response.status_code == 302
+
+
+def test_index_index(app, client, resources):
+    app.config.update({
+        "PAYLOAD_FIRST_ROW": -2,
     })
     response = client.post("/", data={
         "file": ((resources / "input_example.xlsx").open("rb"), "input_example.xlsx"),
