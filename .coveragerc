@@ -1,0 +1,6 @@
+[run]
+omit =
+    tests/*
+    vkcc_auto/src/utils.py
+[report]
+show_missing = true
