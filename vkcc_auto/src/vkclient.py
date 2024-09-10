@@ -14,12 +14,10 @@ class VKclient(object):
         Private link metrics are provided only with "user" authorization
         """
         self.baseurl = "https://api.vk.com/method/utils.getShortLink"
-        self.access_token = access_token
-        self.version = version
         self.token_type = token_type
         self.auth_params = {
-            "access_token": self.access_token,
-            "v": self.version,
+            "access_token": access_token,
+            "v": version,
         }
 
     def test_request(self):
