@@ -20,7 +20,6 @@ def create_app(test_config=None):
         except Exception:
             app.logger.warning("Path to secret config file not found in env. "
                                "Make sure you pass VK API access token to this app config dict")
-            pass
     else:
         # load the test config if passed in
         app.config.from_mapping(test_config)

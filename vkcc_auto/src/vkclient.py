@@ -33,7 +33,7 @@ class VKclient(object):
         if error:
             raise InvalidTokenError()
 
-    def get_short_link(self, url: str, private: int = 0, session: requests.Session = None) -> str:
+    def get_short_link(self, url: str, private: int = 0, session: requests.Session = None) -> tuple[None | dict, str]:
         """
         Method for handling "utils.getShortLink" request
         :param url: a url to be shortened
@@ -47,15 +47,10 @@ class VKclient(object):
         }
 
         if session:
-            # response = session.get(self.baseurl, params={**self.auth_params, **params}, timeout=0.1)
             response = session.get(self.baseurl, params={**self.auth_params, **params})
         else:
-            # response = requests.get(self.baseurl, params={**self.auth_params, **params}, timeout=0.1)
             response = requests.get(self.baseurl, params={**self.auth_params, **params})
         response.raise_for_status()
-
         error = response.json().get("error", None)
-        if error:
-            return error.get("error_msg", "")
 
-        return response.json().get("response", {}).get("short_url", "")
+        return error, response.json().get("response", {}).get("short_url", "")

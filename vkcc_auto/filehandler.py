@@ -45,8 +45,9 @@ def index():
             first_row = current_app.config["PAYLOAD_FIRST_ROW"]
             input_col = current_app.config["PAYLOAD_INPUT_COL"]
             target_col = current_app.config["PAYLOAD_TARGET_COL"]
+            rps_rate = current_app.config["API_RPS_RATE"]
             try:
-                wb = payload(file, token, first_row, input_col, target_col)
+                wb = payload(file, token, first_row, input_col, target_col, rps_rate)
             except ValueError as e:
                 current_app.logger.error(f"Value error on workbook indexing\n{e}")
                 flash("Недопустимый индекс ячейки", "Ошибка сервера")
