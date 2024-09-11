@@ -34,5 +34,6 @@ Using `flask` built-in development server:<br>
    gunicorn -b 0.0.0.0:8000 -w 4 'vkcc_auto:create_app()'
    ```
    **Note:** if you expect to process a large amount of links you might want to increase gunicorn worker timeout (i.e. `-t 90`).
+3. The application has only one page and it's pretty straightforward. Choose a `.xlsx` file with links, press SUBMIT button and wait for an output file download.
 ---
 <img alt="application-index-page" src="img/application-index-page.png" title="application-index-page" width="420"/>
