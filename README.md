@@ -35,4 +35,4 @@ Using `flask` built-in development server:<br>
    ```
    **Note:** if you expect to process a large amount of links you might want to increase gunicorn worker timeout (i.e. `-t 90`).
 ---
-<img alt="application-index-page" src="img/application-index-page.png" title="application-index-page" width="300"/>
+<img alt="application-index-page" src="img/application-index-page.png" title="application-index-page" width="420"/>
