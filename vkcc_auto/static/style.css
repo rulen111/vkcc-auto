@@ -83,3 +83,7 @@ body {
 .message__category {
     font-weight: 700;
 }
+
+.progress {
+    display: none;
+}
