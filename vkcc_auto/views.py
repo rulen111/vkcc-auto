@@ -17,13 +17,15 @@ def run():
     if "file" not in request.files:
         flash("Ошибка отправки файла", "Ошибка")
 
-        return redirect(url_for("index"))
+        # return redirect(url_for("index"))
+        return jsonify({'redirect': url_for('index')})
 
     file = request.files["file"]
     if file.filename == "":
         flash("Файл не выбран", "Ошибка")
 
-        return redirect(url_for("index"))
+        # return redirect(url_for("index"))
+        return jsonify({'redirect': url_for('index')})
 
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
@@ -35,8 +37,8 @@ def run():
         target_col = current_app.config["PAYLOAD_TARGET_COL"]
         rps_rate = current_app.config["API_RPS_RATE"]
         # try:
-        task = tasks.payload.delay(file, filename, token, first_row, input_col, target_col, rps_rate)
-        return jsonify({}), 202, {"Location": url_for("task_status",
+        task = tasks.payload.delay(file.read(), filename, token, first_row, input_col, target_col, rps_rate)
+        return jsonify({}), 202, {"Location": url_for("tasks.task_status",
                                                       task_id=task.id)}
             # wb = payload(file, token, first_row, input_col, target_col, rps_rate)
         # except ValueError as e:
@@ -76,12 +78,13 @@ def run():
     else:
         flash("Неверное расширение файла", "Ошибка")
 
-        return redirect(url_for("index"))
+        # return redirect(url_for("index"))
+        return jsonify({'redirect': url_for('index')})
 
 
 @bp.get("/status/<task_id>")
 def task_status(task_id):
-    task = run.AsyncResult(task_id)
+    task = tasks.payload.AsyncResult(task_id)
     if task.state == "PENDING":
         # job did not start yet
         response = {
@@ -99,7 +102,7 @@ def task_status(task_id):
         }
         if "result" in task.info:
             # response["result"] = task.info["result"]
-            response["redirect"] = url_for("get_result", task_id=task_id)
+            response["redirect"] = url_for("tasks.get_result", task_id=task_id)
             # return redirect(url_for("get_result", task_id=task_id))
     else:
         # something went wrong in the background job
@@ -114,15 +117,15 @@ def task_status(task_id):
 
 @bp.get("/result/<task_id>")
 def get_result(task_id):
-    task = run.AsyncResult(task_id)
+    task = tasks.payload.AsyncResult(task_id)
     result = task.info["result"]
     filename = task.info["filename"]
 
     current_app.logger.info("Payload finished, sending file")
-    wb = result
-    virtual_workbook = BytesIO()
-    wb.save(virtual_workbook)
-    virtual_workbook.seek(0)
+    # wb = result
+    # virtual_workbook = BytesIO()
+    # wb.save(virtual_workbook)
+    # virtual_workbook.seek(0)
 
-    return send_file(virtual_workbook, as_attachment=True, download_name=f"vkcc_{filename}",
+    return send_file(BytesIO(result), as_attachment=True, download_name=f"vkcc_{filename}",
                      mimetype="application/vnd.ms-excel")

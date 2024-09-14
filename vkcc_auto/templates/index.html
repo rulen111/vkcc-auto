@@ -14,7 +14,7 @@
 <body>
     <main class="page">
         <h1 class="title">Автоматический сокращатель ссылок</h1>
-        <form action="/" class="upload__form" method="POST" enctype="multipart/form-data" id="upload__form">
+        <form action="/tasks/run" class="upload__form" method="POST" enctype="multipart/form-data" id="upload__form">
             <input type="file" class="file__input" name="file">
             <button class="submit">Отправить</button>
         </form>
@@ -44,8 +44,6 @@
             const progress = document.getElementById("progress");
             const progressBar = document.getElementById("progress-bar");
 
-            progress.setAttribute("display", "flex");
-
             $.ajax({
                 url: "/tasks/run",
                 method: "POST",
@@ -53,9 +51,15 @@
                 cache: false,
                 processData: false,
                 contentType: false,
-                success: function (response) {
-                    status_url = response.getResponseHeader('Location');
-                    update_progress(status_url, progress, progressBar);
+                success: function (data, status, request) {
+                    if (request.status == 202) {
+                        progress.setAttribute("display", "flex");
+                        status_url = request.getResponseHeader("Location");
+                        update_progress(status_url, progress, progressBar);
+                    };
+                    if ("redirect" in data) {
+                        window.location.href = data.redirect;
+                    };
                 },
                 error: function() {
                     alert("Unexpected error");
@@ -67,17 +71,16 @@
             $.ajax({
                 url: status_url,
                 method: "GET",
-                dataType: "json",
-                success: function (response) {
-                    percent = response["current"];
+                success: function (data, status, request) {
+                    percent = data.current;
                     progressBar.setAttribute("aria-valuenow", percent);
                     progressBar.setAttribute("style", "width:" + percent + "%");
                     progressBar.innerText = percent + "%"
 
-                    if (response["state"] != "PENDING" && response["state"] != "PROGRESS") {
+                    if (data.state != "PENDING" && data.state != "PROGRESS") {
                         progress.setAttribute("display", "none");
-                        if ("redirect" in response) {
-                            window.location.href = response["redirect"];
+                        if ("redirect" in data) {
+                            window.location.href = data.redirect;
                         } else {
                             alert("Unexpected error");
                         };

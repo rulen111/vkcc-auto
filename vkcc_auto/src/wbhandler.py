@@ -1,3 +1,4 @@
+from io import BytesIO
 from typing import IO
 import os
 
@@ -12,7 +13,7 @@ class WBHandler(object):
     """
     Openpyxl workbook wrapper, handles workbook operations
     """
-    def __init__(self, file: str | os.PathLike | IO | FileStorage) -> None:
+    def __init__(self, file: str | os.PathLike | IO | FileStorage | BytesIO) -> None:
         """
         Load excel workbook to start working
         :param file: excel workbook file or path
