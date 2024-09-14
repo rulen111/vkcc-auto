@@ -1,15 +1,26 @@
 import os
-from flask import Flask
+from flask import Flask, render_template
+from celery import Celery, Task
 
-from . import filehandler, config
+from . import views, config
 
 
-def create_app(test_config=None):
+def celery_init_app(app: Flask) -> Celery:
+    class FlaskTask(Task):
+        def __call__(self, *args: object, **kwargs: object) -> object:
+            with app.app_context():
+                return self.run(*args, **kwargs)
+
+    celery_app = Celery(app.name, task_cls=FlaskTask)
+    celery_app.config_from_object(app.config["CELERY"])
+    celery_app.set_default()
+    app.extensions["celery"] = celery_app
+    return celery_app
+
+
+def create_app(test_config=None) -> Flask:
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
-    app.config.from_mapping(
-        SECRET_KEY='dev',
-    )
 
     if test_config is None:
         # load default config
@@ -29,8 +40,13 @@ def create_app(test_config=None):
         os.makedirs(app.instance_path)
     except OSError:
         pass
+    celery_init_app(app)
+
+    @app.route("/")
+    def index() -> str:
+        return render_template("index.html")
 
     # register core logic blueprint
-    app.register_blueprint(filehandler.bp)
+    app.register_blueprint(views.bp)
 
     return app

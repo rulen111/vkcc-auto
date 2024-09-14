@@ -1,3 +1,4 @@
+from io import BytesIO
 from typing import IO
 import os
 
@@ -12,7 +13,7 @@ class WBHandler(object):
     """
     Openpyxl workbook wrapper, handles workbook operations
     """
-    def __init__(self, file: str | os.PathLike | IO | FileStorage) -> None:
+    def __init__(self, file: str | os.PathLike | IO | FileStorage | BytesIO) -> None:
         """
         Load excel workbook to start working
         :param file: excel workbook file or path
@@ -33,6 +34,12 @@ class WBHandler(object):
         :return: value of specified cell
         """
         return self.active_ws.cell(row=row, column=col).value
+
+    def calc_max_row(self) -> int:
+        for row in range(1, self.max_row + 1):
+            value = self.get_value(row, 1)
+            if not value:
+                return row
 
     def write_header(self, row: int, col: int, value: str = "Short link") -> None:
         """

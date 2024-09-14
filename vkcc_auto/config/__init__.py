@@ -1,4 +1,7 @@
 class DefaultConfig(object):
+    # App's secret key
+    SECRET_KEY = "very secret key"
+
     # VK API access token, can be of any type (user, service, community)
     TOKEN = "1234"
     # The amount of time to wait before sending next request to VK API
@@ -13,3 +16,9 @@ class DefaultConfig(object):
     # Index of an excel workbook column to be considered
     # as an output column (starts from 1, not 0)
     PAYLOAD_TARGET_COL = 2
+
+    # Redis broker url for celery
+    CELERY = dict(
+            broker_url="redis://localhost:6379/0",
+            result_backend="redis://localhost:6379/0",
+    )

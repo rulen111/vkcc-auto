@@ -1,4 +1,4 @@
-from vkcc_auto.filehandler import allowed_file
+from vkcc_auto.views import allowed_file
 
 
 def test_allowed_file():
