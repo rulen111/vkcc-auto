@@ -40,41 +40,6 @@ def run():
         task = tasks.payload.delay(file.read(), filename, token, first_row, input_col, target_col, rps_rate)
         return jsonify({}), 202, {"Location": url_for("tasks.task_status",
                                                       task_id=task.id)}
-            # wb = payload(file, token, first_row, input_col, target_col, rps_rate)
-        # except ValueError as e:
-        #     current_app.logger.error(f"Value error on workbook indexing\n{e}")
-        #     flash("Недопустимый индекс ячейки", "Ошибка сервера")
-        #     return redirect(url_for("index"))
-        #
-        # except InvalidTokenError as e:
-        #     current_app.logger.error(f"API Authentification error\n{e}")
-        #     flash("Неверный токен", "Ошибка сервера")
-        #     return redirect(url_for("index"))
-        #
-        # except WBReaderError as e:
-        #     current_app.logger.error(f"File reader error\n{e}")
-        #     flash("Ошибка обработки файла", "Ошибка сервера")
-        #     return redirect(url_for("index"))
-        #
-        # except RequestException as e:
-        #     current_app.logger.error(f"API request error\n{e}")
-        #     flash("Ошбика запроса к VK API", "Ошибка сервера")
-        #     return redirect(url_for("index"))
-        #
-        # except WBWriterError as e:
-        #     current_app.logger.error(f"Writing to file error\n{e}")
-        #     flash("Ошбика записи файла", "Ошибка сервера")
-        #     return redirect(url_for("index"))
-        #
-        # else:
-        # current_app.logger.info("Payload finished, sending file")
-        # wb = result.get("result", )
-        # virtual_workbook = BytesIO()
-        # wb.save(virtual_workbook)
-        # virtual_workbook.seek(0)
-        #
-        # return send_file(virtual_workbook, as_attachment=True, download_name=f"vkcc_{filename}",
-        #                  mimetype="application/vnd.ms-excel")
     else:
         flash("Неверное расширение файла", "Ошибка")
 
@@ -120,12 +85,7 @@ def get_result(task_id):
     task = tasks.payload.AsyncResult(task_id)
     result = task.info["result"]
     filename = task.info["filename"]
-
     current_app.logger.info("Payload finished, sending file")
-    # wb = result
-    # virtual_workbook = BytesIO()
-    # wb.save(virtual_workbook)
-    # virtual_workbook.seek(0)
 
     return send_file(BytesIO(result), as_attachment=True, download_name=f"vkcc_{filename}",
                      mimetype="application/vnd.ms-excel")

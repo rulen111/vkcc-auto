@@ -21,9 +21,6 @@ def payload(
     if first_row < 1 or input_col < 1 or target_col < 1:
         raise TaskError(ValueError("Workbook index must be equal or greater than 1"))
 
-    # logger = get_task_logger(__name__)
-    # logger.warning(type(input_file))
-
     try:
         client = VKclient(client_token)
         client.test_request()
