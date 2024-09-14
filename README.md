@@ -2,6 +2,8 @@
 Tiny flask application for automated link shortening via [vk.cc](https://vk.com/cc) service.
 Takes a `.xlsx` file with links and returns the same file but with shortened links alongside the old ones.
 
+## **This is a legacy release without celery support. Use `main` branch**
+
 ## Installation
 1. **Clone this repository:**<br>
 ```git clone https://github.com/rulen111/vkcc-auto.git```
