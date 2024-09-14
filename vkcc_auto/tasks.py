@@ -34,7 +34,8 @@ def payload(
             wb.write_header(first_row - 1, target_col)
 
         with requests.session() as session:
-            for row in range(first_row, wb.max_row + 1):
+            max_row = wb.calc_max_row()
+            for row in range(first_row, max_row + 1):
                 link = wb.get_value(row, input_col)
                 if not link:
                     break
@@ -47,7 +48,7 @@ def payload(
 
                 self.update_state(state='PROGRESS',
                                   meta={'current': row,
-                                        'total': wb.max_row})
+                                        'total': max_row})
                 time.sleep(1 / rps_rate)
     except Exception as e:
         raise TaskError(e)

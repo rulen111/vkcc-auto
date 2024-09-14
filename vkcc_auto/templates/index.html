@@ -6,7 +6,7 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <link rel="progress-stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <title>vkccAuto</title>
@@ -72,7 +72,7 @@
                 url: status_url,
                 method: "GET",
                 success: function (data, status, request) {
-                    percent = data.current;
+                    percent = parseInt(data.current * 100 / data.total);
                     progressBar.setAttribute("aria-valuenow", percent);
                     progressBar.setAttribute("style", "width:" + percent + "%");
                     progressBar.innerText = percent + "%"
@@ -87,7 +87,7 @@
                     } else {
                         setTimeout(function() {
                             update_progress(status_url, progress, progressBar);
-                        }, 2000);
+                        }, 1000);
                     };
                 },
                 error: function() {

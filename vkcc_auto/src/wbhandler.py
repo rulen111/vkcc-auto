@@ -35,6 +35,12 @@ class WBHandler(object):
         """
         return self.active_ws.cell(row=row, column=col).value
 
+    def calc_max_row(self) -> int:
+        for row in range(1, self.max_row + 1):
+            value = self.get_value(row, 1)
+            if not value:
+                return row
+
     def write_header(self, row: int, col: int, value: str = "Short link") -> None:
         """
         Write header for target column with specified value
