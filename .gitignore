@@ -3,3 +3,4 @@ instance
 .coverage
 .coveragerc
 .env
+my_config.cfg

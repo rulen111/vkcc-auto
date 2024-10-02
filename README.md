@@ -61,4 +61,4 @@ Using `flask` built-in development server:<br>
    ```
 4. The application has only one page and it's pretty straightforward. Choose a `.xlsx` file with links, press SUBMIT button and wait for an output file download. Main page also provides a dynamic progress bar for tracking task progress.
 ---
-<img alt="application-index-page" src="img/application-index-page.png" title="application-index-page" width="350"/><img alt="application-progress" src="img/application-progress.png" title="application-progress" width="350"/><img alt="application-error-flashing" src="img/application-error-flashing.png" title="application-error-flashing" width="350"/>
+<img alt="app-front" src="img/app-front.gif" title="application-index-page"/>
