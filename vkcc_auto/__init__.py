@@ -24,13 +24,14 @@ def create_app(test_config=None) -> Flask:
 
     if test_config is None:
         # load default config
-        app.config.from_object(config.DefaultConfig)
+        app.config.from_object(config.settings)
         # try to load config with sensitive data using path from envvar
-        try:
-            app.config.from_envvar("VKCCAUTO_SETTINGS")
-        except Exception:
-            app.logger.warning("Path to secret config file not found in env. "
-                               "Make sure you pass VK API access token to this app config dict")
+        if app.config["TOKEN"] == "None":
+            try:
+                app.config.from_envvar("VKCCAUTO_SETTINGS")
+            except Exception:
+                app.logger.warning("Path to secret config file not found in env. "
+                                   "Make sure you pass VK API access token to this app config dict")
     else:
         # load the test config if passed in
         app.config.from_mapping(test_config)

@@ -1,0 +1,27 @@
+version: "3"
+
+services:
+  redis:
+    image: "redis:6.0.5-buster"
+    volumes:
+      - "redis:/data"
+
+  worker:
+    build:
+      context: "."
+    command: celery -A make_celery worker -l info
+    depends_on:
+      - "redis"
+
+  web:
+    container_name: vkcc-auto
+    build:
+      context: "."
+    depends_on:
+      - "worker"
+    command: gunicorn -c python:vkcc_auto.config.gunicorn vkcc_auto:create_app()
+    ports:
+      - "${DOCKER_WEB_PORT:0.0.0.0:8000}:8000"
+
+volumes:
+  redis: {}
