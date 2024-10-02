@@ -10,3 +10,4 @@ venv
 .dockerignore
 .gitignore
 my_config.cfg
+.env.example

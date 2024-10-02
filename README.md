@@ -2,6 +2,15 @@
 Tiny flask application for automated link shortening via [vk.cc](https://vk.com/cc) service.
 Takes a `.xlsx` file with links and returns the same file but with shortened links alongside the old ones.
 
+## Run Using Docker
+1. **Clone this repository:**<br>
+`git clone https://github.com/rulen111/vkcc-auto.git`
+2. **Configure environment `./.env`**
+3. **Run everything:**<br>
+`docker-compose up --build`
+
+___
+
 ## Installation
 1. **Clone this repository:**<br>
 ```git clone https://github.com/rulen111/vkcc-auto.git```
